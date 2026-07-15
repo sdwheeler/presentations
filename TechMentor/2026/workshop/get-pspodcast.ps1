@@ -99,6 +99,7 @@ function Get-PSPodcast {
                 pubDate  = '{0:yyyy-MM-dd}' -f [datetime]$_.pubDate
                 duration = '{0:D2}:{1:D2}:{2:D2}' -f $duration.Hours, $duration.Minutes, $duration.Seconds
                 title    = $_.title[0]
+                description = $_.description.'#cdata-section'
             }
             if ($OutFolder -ne '') {
                 $outfile = Join-Path $OutFolder "PowerShell_Podcast_$($_.episode).$fileExtension"
