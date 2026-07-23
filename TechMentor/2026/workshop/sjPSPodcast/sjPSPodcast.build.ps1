@@ -7,7 +7,8 @@
 param (
     [string]$ModuleVersion = '0.1.0',
     [string]$RepositoryName = 'LocalPSRepo',
-    [string]$RepositoryPath = 'C:\Users\steve\OneDrive\PSRepo'
+    [string]$RepositoryPath = 'C:\Users\steve\OneDrive\PSRepo',
+    [switch]$Force
 )
 
 $ModuleName = 'sjPSPodcast'
@@ -80,6 +81,19 @@ task Publish Test, {
             Trusted = $true
         }
         Register-PSResourceRepository @registerPSResourceRepositorySplat
+    }
+
+    $findPSResourceSplat = @{
+        Name        = $ModuleName
+        Version     = $ModuleVersion
+        Repository  = $RepositoryName
+        ErrorAction = 'SilentlyContinue'
+    }
+    $existing = Find-PSResource @findPSResourceSplat
+
+    if ($existing -and -not $Force) {
+        throw "Version $ModuleVersion of $ModuleName is already published to $RepositoryName. " +
+            'Bump -ModuleVersion for a new release, or pass -Force to overwrite it.'
     }
 
     $publishPSResourceSplat = @{
