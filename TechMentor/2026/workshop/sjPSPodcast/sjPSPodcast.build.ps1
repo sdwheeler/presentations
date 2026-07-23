@@ -1,7 +1,12 @@
 <#
     Invoke-Build script for sjPSPodcast.
-    Run with: Invoke-Build (or .\sjPSPodcast.build.ps1) for the full Clean/Build/Test/Publish pipeline,
+    Run with: Invoke-Build (or .\sjPSPodcast.build.ps1) for the Build/Test/Publish pipeline,
     or Invoke-Build <TaskName> to run a single task, e.g. Invoke-Build Test.
+
+    Build refuses to overwrite an already-built version under Output\, and Publish refuses
+    to overwrite an already-published version in the repository -- bump -ModuleVersion for a
+    new release, or pass -Force to overwrite either one intentionally. Clean is not part of
+    the default pipeline; run Invoke-Build Clean explicitly to wipe all build output.
 #>
 
 param (
@@ -21,7 +26,16 @@ task Clean {
     }
 }
 
-task Build Clean, {
+task Build {
+    if (Test-Path -LiteralPath $ModuleOutDir) {
+        if (-not $Force) {
+            throw "Version $ModuleVersion of $ModuleName already exists in Output. " +
+                'Bump -ModuleVersion for a new build, or pass -Force to overwrite it.'
+        }
+
+        Remove-Item -LiteralPath $ModuleOutDir -Recurse -Force
+    }
+
     New-Item -ItemType Directory -Force -Path $ModuleOutDir | Out-Null
 
     $privateFunctions = Get-ChildItem -Path (Join-Path -Path $BuildRoot -ChildPath 'Private') -Filter '*.ps1'
@@ -103,4 +117,4 @@ task Publish Test, {
     Publish-PSResource @publishPSResourceSplat
 }
 
-task . Clean, Build, Test, Publish
+task . Build, Test, Publish
