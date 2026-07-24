@@ -110,7 +110,7 @@ Test-Scope
 $var
 ```
 
-## From one-liners to functions to scripts
+## From one-liners to scripts to functions to modules
 
 Evolution of a tool (outline only - examples later)
 
