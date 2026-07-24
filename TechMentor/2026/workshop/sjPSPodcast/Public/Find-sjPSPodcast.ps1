@@ -1,5 +1,5 @@
 function Find-sjPSPodcast {
-    <#
+  <#
     .SYNOPSIS
     Searches episodes of the PowerShell Podcast.
 
@@ -35,40 +35,51 @@ function Find-sjPSPodcast {
 
     Lists episodes published since 2025-01-01 whose description mentions "DSC".
 
+    .EXAMPLE
+    Find-sjPSPodcast -Number (100..110)
+
+    Lists episodes 100 through 110.
+
+    .EXAMPLE
+    Find-sjPSPodcast -Description judd | Select-Object -Last 1
+
+    Lists the most recent episode whose description mentions "judd".
+
     .OUTPUTS
     sjPSPodcast.Episode
 
     .LINK
     https://powershellpodcast.podbean.com/
-    #>
-    [CmdletBinding()]
-    param (
-        [Parameter()]
-        [int[]]$Number,
+  #>
 
-        [Parameter()]
-        [SupportsWildcards()]
-        [string]$Title,
+  [CmdletBinding()]
+  param (
+    [Parameter()]
+    [int[]]$Number,
 
-        [Parameter()]
-        [SupportsWildcards()]
-        [string]$Description,
+    [Parameter()]
+    [SupportsWildcards()]
+    [string]$Title,
 
-        [Parameter()]
-        [datetime]$After,
+    [Parameter()]
+    [SupportsWildcards()]
+    [string]$Description,
 
-        [Parameter()]
-        [datetime]$Before
-    )
+    [Parameter()]
+    [datetime]$After,
 
-    $titlePattern = if ($Title -match '[*?]') { $Title } else { "*$Title*" }
-    $descriptionPattern = if ($Description -match '[*?]') { $Description } else { "*$Description*" }
+    [Parameter()]
+    [datetime]$Before
+  )
 
-    Get-sjPSPodcast | Where-Object {
-        (-not $PSBoundParameters.ContainsKey('Number') -or $_.Number -in $Number) -and
-        (-not $PSBoundParameters.ContainsKey('Title') -or $_.Title -like $titlePattern) -and
-        (-not $PSBoundParameters.ContainsKey('Description') -or $_.Description -like $descriptionPattern) -and
-        (-not $PSBoundParameters.ContainsKey('After') -or $_.PubDate -ge $After) -and
-        (-not $PSBoundParameters.ContainsKey('Before') -or $_.PubDate -le $Before)
-    }
-}
+  $titlePattern = if ($Title -match '[*?]') { $Title } else { "*$Title*" }
+  $descriptionPattern = if ($Description -match '[*?]') { $Description } else { "*$Description*" }
+
+  Get-sjPSPodcast | Where-Object {
+    (-not $PSBoundParameters.ContainsKey('Number') -or $_.Number -in $Number) -and
+    (-not $PSBoundParameters.ContainsKey('Title') -or $_.Title -like $titlePattern) -and
+    (-not $PSBoundParameters.ContainsKey('Description') -or $_.Description -like $descriptionPattern) -and
+    (-not $PSBoundParameters.ContainsKey('After') -or $_.PubDate -ge $After) -and
+    (-not $PSBoundParameters.ContainsKey('Before') -or $_.PubDate -le $Before)
+  }
+} # end function Find-sjPSPodcast

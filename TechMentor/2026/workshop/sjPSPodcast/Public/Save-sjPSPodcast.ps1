@@ -1,5 +1,5 @@
 function Save-sjPSPodcast {
-    <#
+  <#
     .SYNOPSIS
     Downloads an episode of the PowerShell Podcast.
 
@@ -27,9 +27,14 @@ function Save-sjPSPodcast {
     Emit a FileInfo for the downloaded file.
 
     .EXAMPLE
-    Save-sjPSPodcast -Number 42
+    Save-sjPSPodcast -Number 40
 
-    Downloads episode 42 to the current directory.
+    Downloads episode 40 to the current directory.
+
+    .EXAMPLE
+    Find-sjPSPodcast -Number 121 | Save-sjPSPodcast -PassThru
+
+    Downloads episode 121 to the current directory and emits a FileInfo for the downloaded file.
 
     .EXAMPLE
     Find-sjPSPodcast -Title Azure | Save-sjPSPodcast -Destination C:\Podcasts
@@ -41,55 +46,56 @@ function Save-sjPSPodcast {
 
     .LINK
     https://powershellpodcast.podbean.com/
-    #>
-    [CmdletBinding(SupportsShouldProcess)]
-    param (
-        [Parameter(Mandatory, ValueFromPipelineByPropertyName, Position = 0)]
-        [int]$Number,
+  #>
 
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$Title,
+  [CmdletBinding(SupportsShouldProcess)]
+  param (
+    [Parameter(Mandatory, ValueFromPipelineByPropertyName, Position = 0)]
+    [int]$Number,
 
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$Url,
+    [Parameter(ValueFromPipelineByPropertyName)]
+    [string]$Title,
 
-        [Parameter()]
-        [string]$Destination = (Get-Location).Path,
+    [Parameter(ValueFromPipelineByPropertyName)]
+    [string]$Url,
 
-        [Parameter()]
-        [switch]$PassThru
-    )
+    [Parameter()]
+    [string]$Destination = (Get-Location).Path,
 
-    process {
-        if (-not $Url) {
-            $episode = Find-sjPSPodcast -Number $Number
-            if (-not $episode) {
-                Write-Error -Message "Episode $Number was not found in the feed."
-                return
-            }
-            $Title = $episode.Title
-            $Url = $episode.Url
-        }
+    [Parameter()]
+    [switch]$PassThru
+  )
 
-        $extension = ($Url -split '\.')[-1]
-        $safeTitle = ($Title -replace '[\\/:*?"<>|]', '').Trim()
-        $fileName = 'sjPSPodcast_Ep{0}_{1}.{2}' -f $Number, $safeTitle, $extension
-        $outFile = Join-Path -Path $Destination -ChildPath $fileName
-
-        if ($PSCmdlet.ShouldProcess($outFile, 'Download episode')) {
-            if (-not (Test-Path -LiteralPath $Destination -PathType Container)) {
-                New-Item -ItemType Directory -Force -Path $Destination | Out-Null
-            }
-
-            $invokeWebRequestSplat = @{
-                Uri     = $Url
-                OutFile = $outFile
-            }
-            Invoke-WebRequest @invokeWebRequestSplat
-
-            if ($PassThru) {
-                Get-Item -LiteralPath $outFile
-            }
-        }
+  process {
+    if (-not $Url) {
+      $episode = Find-sjPSPodcast -Number $Number
+      if (-not $episode) {
+        Write-Error -Message "Episode $Number was not found in the feed."
+        return
+      }
+      $Title = $episode.Title
+      $Url = $episode.Url
     }
-}
+
+    $extension = ($Url -split '\.')[-1]
+    $safeTitle = ($Title -replace '[\\/:*?"<>|]', '').Trim()
+    $fileName = 'PowerShellPodcast_Ep{0}_{1}.{2}' -f $Number, $safeTitle, $extension
+    $outFile = Join-Path -Path $Destination -ChildPath $fileName
+
+    if ($PSCmdlet.ShouldProcess($outFile, 'Download episode')) {
+      if (-not (Test-Path -LiteralPath $Destination -PathType Container)) {
+        New-Item -ItemType Directory -Force -Path $Destination | Out-Null
+      }
+
+      $invokeWebRequestSplat = @{
+        Uri = $Url
+        OutFile = $outFile
+      }
+      Invoke-WebRequest @invokeWebRequestSplat
+
+      if ($PassThru) {
+        Get-Item -LiteralPath $outFile
+      }
+    }
+  } # end process block
+} # end function Save-sjPSPodcast

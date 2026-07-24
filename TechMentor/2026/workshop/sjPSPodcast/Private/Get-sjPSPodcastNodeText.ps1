@@ -1,5 +1,5 @@
 function Get-sjPSPodcastNodeText {
-    <#
+  <#
     .SYNOPSIS
     Extracts plain text from a feed field that Invoke-RestMethod may return as a
     plain string or as an XmlElement wrapping a #cdata-section or #text child.
@@ -13,25 +13,26 @@ function Get-sjPSPodcastNodeText {
 
     .PARAMETER Node
     The raw property value to extract text from.
-    #>
-    [CmdletBinding()]
-    param (
-        [Parameter(ValueFromPipeline)]
-        [object]$Node
-    )
+  #>
 
-    process {
-        if ($null -eq $Node) {
-            return
-        }
-        if ($Node -is [string]) {
-            return $Node
-        }
-        if ($Node.PSObject.Properties.Match('#cdata-section').Count -gt 0) {
-            return $Node.'#cdata-section'
-        }
-        if ($Node.PSObject.Properties.Match('#text').Count -gt 0) {
-            return $Node.'#text'
-        }
+  [CmdletBinding()]
+  param (
+    [Parameter(ValueFromPipeline)]
+    [object]$Node
+  )
+
+  process {
+    if ($null -eq $Node) {
+      return
     }
-}
+    if ($Node -is [string]) {
+      return $Node
+    }
+    if ($Node.PSObject.Properties.Match('#cdata-section').Count -gt 0) {
+      return $Node.'#cdata-section'
+    }
+    if ($Node.PSObject.Properties.Match('#text').Count -gt 0) {
+      return $Node.'#text'
+    }
+  }
+} # end function Get-sjPSPodcastNodeText

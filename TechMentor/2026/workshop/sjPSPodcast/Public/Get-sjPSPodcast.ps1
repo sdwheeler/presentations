@@ -1,5 +1,5 @@
 function Get-sjPSPodcast {
-    <#
+  <#
     .SYNOPSIS
     Lists episodes of the PowerShell Podcast.
 
@@ -25,21 +25,22 @@ function Get-sjPSPodcast {
 
     .LINK
     https://powershellpodcast.podbean.com/
-    #>
-    [CmdletBinding()]
-    param ()
+  #>
 
-    $invokeRestMethodSplat = @{
-        Uri         = 'https://feed.podbean.com/powershellpodcast/feed.xml'
-        ErrorAction = 'Stop'
-    }
+  [CmdletBinding()]
+  param ()
 
-    try {
-        $feed = Invoke-RestMethod @invokeRestMethodSplat
-    } catch {
-        Write-Error -Message "Failed to retrieve the podcast feed '$($invokeRestMethodSplat.Uri)': $_"
-        return
-    }
+  $invokeRestMethodSplat = @{
+    Uri = 'https://feed.podbean.com/powershellpodcast/feed.xml'
+    ErrorAction = 'Stop'
+  }
 
-    $feed | ConvertTo-sjPSPodcastEpisode | Sort-Object -Property Number
-}
+  try {
+    $feed = Invoke-RestMethod @invokeRestMethodSplat
+  } catch {
+    Write-Error -Message "Failed to retrieve the podcast feed '$($invokeRestMethodSplat.Uri)': $_"
+    return
+  }
+
+  $feed | ConvertTo-sjPSPodcastEpisode | Sort-Object -Property Number
+} # end function Get-sjPSPodcast

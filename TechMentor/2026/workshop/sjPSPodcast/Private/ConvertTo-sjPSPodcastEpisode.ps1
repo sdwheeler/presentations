@@ -1,5 +1,5 @@
 function ConvertTo-sjPSPodcastEpisode {
-    <#
+  <#
     .SYNOPSIS
     Converts a raw PowerShell Podcast feed item into an sjPSPodcast.Episode object.
 
@@ -20,36 +20,37 @@ function ConvertTo-sjPSPodcastEpisode {
 
     .OUTPUTS
     PSCustomObject (PSTypeName sjPSPodcast.Episode)
-    #>
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory, ValueFromPipeline)]
-        [object]$InputObject
-    )
+  #>
 
-    process {
-        $description = Get-sjPSPodcastNodeText -Node $InputObject.summary
-        if ([string]::IsNullOrWhiteSpace($description)) {
-            $description = Get-sjPSPodcastNodeText -Node $InputObject.description
-        }
+  [CmdletBinding()]
+  param (
+    [Parameter(Mandatory, ValueFromPipeline)]
+    [object]$InputObject
+  )
 
-        $title = $InputObject.title
-        if ($title -is [array]) {
-            $title = $title[0]
-        }
-
-        [PSCustomObject]@{
-            PSTypeName  = 'sjPSPodcast.Episode'
-            Number      = [int]$InputObject.episode
-            Title       = $title
-            PubDate     = [datetime]$InputObject.pubDate
-            Duration    = [timespan]::new(0, 0, [int]$InputObject.duration)
-            Description = $description
-            Url         = $InputObject.enclosure.url
-            FileSize    = [int64]$InputObject.enclosure.length
-            MimeType    = $InputObject.enclosure.type
-            Guid        = $InputObject.guid.'#text'
-            Link        = $InputObject.link
-        }
+  process {
+    $description = Get-sjPSPodcastNodeText -Node $InputObject.summary
+    if ([string]::IsNullOrWhiteSpace($description)) {
+      $description = Get-sjPSPodcastNodeText -Node $InputObject.description
     }
-}
+
+    $title = $InputObject.title
+    if ($title -is [array]) {
+      $title = $title[0]
+    }
+
+    [PSCustomObject]@{
+      PSTypeName = 'sjPSPodcast.Episode'
+      Number = [int]$InputObject.episode
+      Title = $title
+      PubDate = [datetime]$InputObject.pubDate
+      Duration = [timespan]::new(0, 0, [int]$InputObject.duration)
+      Description = $description
+      Url = $InputObject.enclosure.url
+      FileSize = [int64]$InputObject.enclosure.length
+      MimeType = $InputObject.enclosure.type
+      Guid = $InputObject.guid.'#text'
+      Link = $InputObject.link
+    }
+  } # end process block
+} # end function ConvertTo-sjPSPodcastEpisode
