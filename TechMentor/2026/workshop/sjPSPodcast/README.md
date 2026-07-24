@@ -4,7 +4,7 @@ A small PowerShell module: list, search, and download episodes of [The PowerShel
 
 ## Commands
 
-- `Get-sjPSPodcast` — lists every episode, newest first.
+- `Get-sjPSPodcast` — lists every episode, oldest first, so the most recent episode prints last (right above your prompt).
 - `Find-sjPSPodcast` — filters episodes by `-Number`, `-Title`, `-Description`, `-After`, and/or `-Before`. Filters combine with AND.
 - `Save-sjPSPodcast` — downloads an episode's audio file. Accepts pipeline input from `Get-sjPSPodcast`/`Find-sjPSPodcast`, or a bare `-Number`.
 

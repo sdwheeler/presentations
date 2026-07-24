@@ -5,16 +5,18 @@ function Get-sjPSPodcast {
 
     .DESCRIPTION
     Fetches the PowerShell Podcast RSS feed and returns every episode as an
-    sjPSPodcast.Episode object, newest first. The feed is always fetched fresh;
-    nothing is cached between calls.
+    sjPSPodcast.Episode object, oldest first, so the most recent episode is the
+    last one printed -- right above your prompt when run interactively, with no
+    scrolling needed. The feed is always fetched fresh; nothing is cached between
+    calls.
 
     .EXAMPLE
     Get-sjPSPodcast
 
-    Lists every episode.
+    Lists every episode, oldest first.
 
     .EXAMPLE
-    Get-sjPSPodcast | Select-Object -First 5
+    Get-sjPSPodcast | Select-Object -Last 5
 
     Lists the five most recent episodes.
 
@@ -39,5 +41,5 @@ function Get-sjPSPodcast {
         return
     }
 
-    $feed | ConvertTo-sjPSPodcastEpisode | Sort-Object -Property Number -Descending
+    $feed | ConvertTo-sjPSPodcastEpisode | Sort-Object -Property Number
 }

@@ -64,10 +64,10 @@ Describe 'Get-sjPSPodcast' {
         $result[0].PSTypeNames | Should -Contain 'sjPSPodcast.Episode'
     }
 
-    It 'sorts episodes by Number descending' {
+    It 'sorts episodes by Number ascending, so the most recent episode prints last' {
         $result = Get-sjPSPodcast
-        $result[0].Number | Should -Be 239
-        $result[1].Number | Should -Be 100
+        $result[0].Number | Should -Be 100
+        $result[1].Number | Should -Be 239
     }
 
     It 'maps the feed fields correctly' {
