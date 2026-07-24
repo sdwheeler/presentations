@@ -56,6 +56,16 @@ task Build {
     $manifestPath = Join-Path -Path $ModuleOutDir -ChildPath "$ModuleName.psd1"
     Copy-Item -Path (Join-Path -Path $BuildRoot -ChildPath "$ModuleName.psd1") -Destination $manifestPath
 
+    <#
+        Update-ModuleManifest refuses to touch a manifest sitting in a version-numbered
+        folder unless its current ModuleVersion already matches that folder name. The
+        copied template always hardcodes '0.1.0', so patch the version string directly
+        before handing the manifest to Update-ModuleManifest for everything else.
+    #>
+    (Get-Content -LiteralPath $manifestPath -Raw) -replace
+        "ModuleVersion\s*=\s*'[^']*'", "ModuleVersion     = '$ModuleVersion'" |
+        Set-Content -LiteralPath $manifestPath -Encoding utf8
+
     $updateModuleManifestSplat = @{
         Path              = $manifestPath
         ModuleVersion     = $ModuleVersion
