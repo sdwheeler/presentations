@@ -47,6 +47,18 @@ task Build {
     }
     $psm1Content += "Export-ModuleMember -Function $($publicFunctions.BaseName -join ', ')"
 
+    <#
+        Loaded here (instead of via the manifest's FormatsToProcess/TypesToProcess keys)
+        because manifest-driven loading is session-wide, additive, and never undone by
+        Remove-Module -- reimporting the module a second time in the same session (e.g.
+        Import-Module -Force) throws "member ... is already present". Calling these
+        cmdlets ourselves lets -ErrorAction SilentlyContinue swallow that harmlessly.
+    #>
+    $psm1Content += @'
+Update-FormatData -PrependPath (Join-Path -Path $PSScriptRoot -ChildPath 'sjPSPodcast.Format.ps1xml') -ErrorAction SilentlyContinue
+Update-TypeData -PrependPath (Join-Path -Path $PSScriptRoot -ChildPath 'sjPSPodcast.Types.ps1xml') -ErrorAction SilentlyContinue
+'@
+
     $psm1Path = Join-Path -Path $ModuleOutDir -ChildPath "$ModuleName.psm1"
     Set-Content -LiteralPath $psm1Path -Value ($psm1Content -join "`r`n`r`n") -Encoding utf8
 
@@ -70,8 +82,6 @@ task Build {
         Path              = $manifestPath
         ModuleVersion     = $ModuleVersion
         FunctionsToExport = $publicFunctions.BaseName
-        FormatsToProcess  = "$ModuleName.Format.ps1xml"
-        TypesToProcess    = "$ModuleName.Types.ps1xml"
     }
     Update-ModuleManifest @updateModuleManifestSplat
 }
