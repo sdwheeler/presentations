@@ -6,9 +6,13 @@ function ConvertTo-sjPSPodcastEpisode {
     .DESCRIPTION
     Invoke-RestMethod flattens most of the feed's itunes: elements cleanly, but a
     few need help: title comes back as a two-element array (rss title + duplicate
-    itunes:title), description is a CDATA node, and guid/enclosure carry their
-    values as attributes plus a #text/child property. This function normalizes
-    all of that into one PSCustomObject shape.
+    itunes:title), description/summary are CDATA nodes (see Get-sjPSPodcastNodeText),
+    and guid/enclosure carry their values as attributes plus a #text/child property.
+    This function normalizes all of that into one PSCustomObject shape.
+
+    itunes:summary is used for Description (plain text) rather than description or
+    content:encoded, both of which carry the same content wrapped in raw HTML markup
+    (<ul><li><a href=...>) that isn't appropriate for a console-displayed property.
 
     .PARAMETER InputObject
     A single raw feed item, as returned by Invoke-RestMethod against
@@ -24,9 +28,9 @@ function ConvertTo-sjPSPodcastEpisode {
     )
 
     process {
-        $description = $InputObject.summary
+        $description = Get-sjPSPodcastNodeText -Node $InputObject.summary
         if ([string]::IsNullOrWhiteSpace($description)) {
-            $description = $InputObject.description.'#cdata-section'
+            $description = Get-sjPSPodcastNodeText -Node $InputObject.description
         }
 
         $title = $InputObject.title

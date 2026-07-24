@@ -21,7 +21,7 @@ BeforeAll {
             title       = @('Episode 239 Title', 'Episode 239 Title')
             pubDate     = 'Mon, 20 Jul 2026 08:00:00 -0600'
             duration    = 2746
-            summary     = 'Summary for episode 239.'
+            summary     = [PSCustomObject]@{ '#cdata-section' = 'Summary for episode 239.' }
             description = [PSCustomObject]@{ '#cdata-section' = 'Full description for episode 239.' }
             enclosure   = [PSCustomObject]@{
                 url    = 'https://mcdn.podbean.com/mf/web/xyz/episode_239.mp3'
@@ -36,7 +36,7 @@ BeforeAll {
             title       = @('Episode 100 Title', 'Episode 100 Title')
             pubDate     = 'Mon, 01 Jan 2024 08:00:00 -0600'
             duration    = 1800
-            summary     = 'Summary for episode 100 about Azure automation.'
+            summary     = [PSCustomObject]@{ '#cdata-section' = 'Summary for episode 100 about Azure automation.' }
             description = [PSCustomObject]@{ '#cdata-section' = 'Full description for episode 100 about Azure.' }
             enclosure   = [PSCustomObject]@{
                 url    = 'https://mcdn.podbean.com/mf/web/xyz/episode_100.mp3'

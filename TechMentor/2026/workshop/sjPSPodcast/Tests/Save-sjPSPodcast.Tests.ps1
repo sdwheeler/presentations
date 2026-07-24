@@ -53,7 +53,7 @@ Describe 'Save-sjPSPodcast' {
                     title       = @('Episode 239 Title', 'Episode 239 Title')
                     pubDate     = 'Mon, 20 Jul 2026 08:00:00 -0600'
                     duration    = 2746
-                    summary     = 'Summary'
+                    summary     = [PSCustomObject]@{ '#cdata-section' = 'Summary' }
                     description = [PSCustomObject]@{ '#cdata-section' = 'Full description' }
                     enclosure   = [PSCustomObject]@{
                         url    = 'https://mcdn.podbean.com/mf/web/xyz/episode_239.mp3'
