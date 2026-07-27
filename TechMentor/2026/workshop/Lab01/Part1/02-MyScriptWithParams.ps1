@@ -1,6 +1,6 @@
 param(
-    [datetime] $EventDate = '03/03/2026'
-    [string]   $Presenter = 'Sean'
+    [datetime] $EventDate = '03/03/2026',
+    [string]   $Presenter = 'Sean',
     [string]   $Subject   = 'how to work with PowerShell modules'
 )
 

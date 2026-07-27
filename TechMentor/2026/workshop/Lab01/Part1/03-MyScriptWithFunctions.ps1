@@ -1,6 +1,6 @@
 param (
-    [datetime] $EventDate = '03/03/2026'
-    [string]   $Presenter = 'Sean'
+    [datetime] $EventDate = '03/03/2026',
+    [string]   $Presenter = 'Sean',
     [string]   $Subject   = 'how to work with PowerShell modules'
 )
 
@@ -22,7 +22,6 @@ function Get-MyDemoMessage {
             $Presenter
             $Subject
         )
-
     } elseif ($EventDate -lt [datetime]::Today) {
         'The event was {0} days ago, don''t worry!' -f ([datetime]::Today - $EventDate).Days
     } else {

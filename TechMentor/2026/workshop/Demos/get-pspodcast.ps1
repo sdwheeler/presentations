@@ -97,7 +97,7 @@ function Get-PSPodcast {
             [pscustomobject]@{
                 episode  = [int]$_.episode
                 pubDate  = '{0:yyyy-MM-dd}' -f [datetime]$_.pubDate
-                duration = '{0:D2}:{1:D2}:{2:D2}' -f $duration.Hours, $duration.Minutes, $duration.Seconds
+                duration = $duration.ToString()
                 title    = $_.title[0]
                 description = $_.description.'#cdata-section'
             }
