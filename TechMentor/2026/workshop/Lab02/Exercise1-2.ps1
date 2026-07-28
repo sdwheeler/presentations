@@ -1,8 +1,7 @@
 ﻿<#######################################################################################
 # Lab02
 # - Add comment-based help for both functions
-# - Add parameter validation for for the Path parameter in Convert-sjBinaryToText
-# - Add parameter validation for the OutputPath parameter in Convert-sjTextToBinary
+# - Add parameter validation for the Path parameter in Convert-sjBinaryToText
 #######################################################################################>
 function Convert-sjBinaryToText {
   param

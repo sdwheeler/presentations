@@ -16,7 +16,6 @@
   gpupdate /target:computer /force
 }
 
-
 function Disable-sjWindowsWidget {
   # check if running as admin
   if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(

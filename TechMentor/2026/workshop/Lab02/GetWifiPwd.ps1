@@ -1,6 +1,6 @@
 ﻿<#######################################################################################
 # Lab02 - stretch goal
-# - Add argument completion for the NetworkName parameter in Get-sjWifiPassword
+# - Add argument completion for the NetworkName parameter of Get-sjWifiPassword
 #   Tab completion should show the network names currently registered in the system
 #######################################################################################>
 function Get-sjWifiPassword {
