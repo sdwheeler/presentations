@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Types>
+  <Type>
+    <Name>sjPSPodcast.Episode</Name>
+    <Members>
+      <PropertySet>
+        <Name>DefaultDisplayPropertySet</Name>
+        <ReferencedProperties>
+          <Name>Number</Name>
+          <Name>Title</Name>
+          <Name>PubDate</Name>
+          <Name>Duration</Name>
+          <Name>Description</Name>
+        </ReferencedProperties>
+      </PropertySet>
+    </Members>
+  </Type>
+</Types>
