@@ -1,0 +1,11 @@
+PS> Import-Module .\sjWindowWidget.psd1
+PS> Get-Command -Module sjWindowWidget
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Function        Disable-sjWindowsWidget                            0.0.1      sjWindowWidget
+Function        Enable-sjWindowsWidget                             0.0.1      sjWindowWidget
+
+PS> Disable-sjWindowsWidget
+WARNING: This function must be run as an administrator.
+PS>
